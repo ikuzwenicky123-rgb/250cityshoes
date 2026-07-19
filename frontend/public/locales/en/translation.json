@@ -1,0 +1,39 @@
+{
+  "nav": {
+    "home": "Home",
+    "products": "Products",
+    "about": "About",
+    "contact": "Contact",
+    "login": "Login"
+  },
+  "hero": {
+    "shopNow": "Shop Now"
+  },
+  "products": {
+    "title": "Our Products",
+    "searchPlaceholder": "Search products...",
+    "allCategories": "All Categories",
+    "noResults": "No products found",
+    "categories": {
+      "tshirts": "T-Shirts",
+      "jeans": "Jeans",
+      "sweatpants": "Sweatpants",
+      "pants": "Pants",
+      "shirts": "Shirts",
+      "suits": "Suits",
+      "hoodies": "Hoodies"
+    }
+  },
+  "footer": {
+    "contact": "Contact",
+    "links": "Quick Links",
+    "legal": "Legal",
+    "about": "About Us",
+    "products": "Products",
+    "faq": "FAQ",
+    "privacy": "Privacy Policy",
+    "terms": "Terms of Service",
+    "returnPolicy": "Return Policy",
+    "shipping": "Shipping Info"
+  }
+}
