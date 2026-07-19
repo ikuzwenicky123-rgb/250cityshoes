@@ -12,6 +12,8 @@ export default function AdminDashboard() {
     totalOrders: 0,
     totalProducts: 0,
     totalCustomers: 0,
+    pendingPayments: 0,
+    guestAdminsCount: 0,
   });
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState('dashboard');
@@ -28,7 +30,6 @@ export default function AdminDashboard() {
     const userData = JSON.parse(localStorage.getItem('user') || '{}');
     setAdminData(userData);
 
-    // Fetch stats
     fetchStats();
   }, [router]);
 
@@ -75,10 +76,10 @@ export default function AdminDashboard() {
           </div>
 
           {/* Navigation Tabs */}
-          <div className="flex gap-4 mb-8 bg-white p-4 rounded-lg shadow">
+          <div className="flex gap-2 mb-8 bg-white p-4 rounded-lg shadow overflow-x-auto">
             <button
               onClick={() => setActiveTab('dashboard')}
-              className={`px-6 py-2 rounded-lg font-semibold transition ${
+              className={`px-4 py-2 rounded-lg font-semibold whitespace-nowrap transition ${
                 activeTab === 'dashboard'
                   ? 'bg-blue-600 text-white'
                   : 'bg-gray-200 hover:bg-gray-300'
@@ -88,7 +89,7 @@ export default function AdminDashboard() {
             </button>
             <button
               onClick={() => setActiveTab('orders')}
-              className={`px-6 py-2 rounded-lg font-semibold transition ${
+              className={`px-4 py-2 rounded-lg font-semibold whitespace-nowrap transition ${
                 activeTab === 'orders'
                   ? 'bg-blue-600 text-white'
                   : 'bg-gray-200 hover:bg-gray-300'
@@ -97,18 +98,8 @@ export default function AdminDashboard() {
               📦 Orders
             </button>
             <button
-              onClick={() => setActiveTab('products')}
-              className={`px-6 py-2 rounded-lg font-semibold transition ${
-                activeTab === 'products'
-                  ? 'bg-blue-600 text-white'
-                  : 'bg-gray-200 hover:bg-gray-300'
-              }`}
-            >
-              🛍️ Products
-            </button>
-            <button
               onClick={() => setActiveTab('payment')}
-              className={`px-6 py-2 rounded-lg font-semibold transition ${
+              className={`px-4 py-2 rounded-lg font-semibold whitespace-nowrap transition ${
                 activeTab === 'payment'
                   ? 'bg-blue-600 text-white'
                   : 'bg-gray-200 hover:bg-gray-300'
@@ -118,17 +109,17 @@ export default function AdminDashboard() {
             </button>
             <button
               onClick={() => setActiveTab('guests')}
-              className={`px-6 py-2 rounded-lg font-semibold transition ${
+              className={`px-4 py-2 rounded-lg font-semibold whitespace-nowrap transition ${
                 activeTab === 'guests'
                   ? 'bg-blue-600 text-white'
                   : 'bg-gray-200 hover:bg-gray-300'
               }`}
             >
-              👥 Guest Admins
+              👤 Guest Admins
             </button>
             <button
               onClick={() => setActiveTab('settings')}
-              className={`px-6 py-2 rounded-lg font-semibold transition ${
+              className={`px-4 py-2 rounded-lg font-semibold whitespace-nowrap transition ${
                 activeTab === 'settings'
                   ? 'bg-blue-600 text-white'
                   : 'bg-gray-200 hover:bg-gray-300'
@@ -142,31 +133,56 @@ export default function AdminDashboard() {
           {activeTab === 'dashboard' && (
             <div>
               {/* Stats Cards */}
-              <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-                <div className="bg-white p-6 rounded-lg shadow">
+              <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-6 gap-4 mb-8">
+                <div className="bg-white p-4 rounded-lg shadow">
                   <p className="text-gray-600 text-sm">Total Sales</p>
-                  <p className="text-3xl font-bold text-blue-600">RWF {stats.totalSales}</p>
+                  <p className="text-2xl font-bold text-blue-600">RWF {stats.totalSales}</p>
                 </div>
-                <div className="bg-white p-6 rounded-lg shadow">
+                <div className="bg-white p-4 rounded-lg shadow">
                   <p className="text-gray-600 text-sm">Total Orders</p>
-                  <p className="text-3xl font-bold text-green-600">{stats.totalOrders}</p>
+                  <p className="text-2xl font-bold text-green-600">{stats.totalOrders}</p>
                 </div>
-                <div className="bg-white p-6 rounded-lg shadow">
+                <div className="bg-white p-4 rounded-lg shadow">
+                  <p className="text-gray-600 text-sm">Pending Payments</p>
+                  <p className="text-2xl font-bold text-yellow-600">{stats.pendingPayments}</p>
+                </div>
+                <div className="bg-white p-4 rounded-lg shadow">
                   <p className="text-gray-600 text-sm">Total Products</p>
-                  <p className="text-3xl font-bold text-purple-600">{stats.totalProducts}</p>
+                  <p className="text-2xl font-bold text-purple-600">{stats.totalProducts}</p>
                 </div>
-                <div className="bg-white p-6 rounded-lg shadow">
+                <div className="bg-white p-4 rounded-lg shadow">
                   <p className="text-gray-600 text-sm">Total Customers</p>
-                  <p className="text-3xl font-bold text-orange-600">{stats.totalCustomers}</p>
+                  <p className="text-2xl font-bold text-orange-600">{stats.totalCustomers}</p>
+                </div>
+                <div className="bg-white p-4 rounded-lg shadow">
+                  <p className="text-gray-600 text-sm">Guest Admins</p>
+                  <p className="text-2xl font-bold text-pink-600">{stats.guestAdminsCount}</p>
                 </div>
               </div>
 
-              {/* Placeholder Content */}
+              {/* Quick Links */}
               <div className="bg-white p-6 rounded-lg shadow">
-                <h2 className="text-2xl font-bold mb-4">📈 Overview</h2>
-                <p className="text-gray-600 text-center py-12">
-                  Dashboard analytics will be displayed here. More features coming soon!
-                </p>
+                <h2 className="text-2xl font-bold mb-4">⚡ Quick Actions</h2>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  <Link
+                    href="/admin/orders"
+                    className="bg-blue-600 text-white p-6 rounded-lg hover:bg-blue-700 text-center font-bold"
+                  >
+                    📦 View Orders
+                  </Link>
+                  <Link
+                    href="/admin/payment-methods"
+                    className="bg-green-600 text-white p-6 rounded-lg hover:bg-green-700 text-center font-bold"
+                  >
+                    💳 Payment Methods
+                  </Link>
+                  <Link
+                    href="/admin/guest-admins"
+                    className="bg-purple-600 text-white p-6 rounded-lg hover:bg-purple-700 text-center font-bold"
+                  >
+                    👤 Guest Admins
+                  </Link>
+                </div>
               </div>
             </div>
           )}
@@ -175,19 +191,12 @@ export default function AdminDashboard() {
           {activeTab === 'orders' && (
             <div className="bg-white p-6 rounded-lg shadow">
               <h2 className="text-2xl font-bold mb-4">📦 Order Management</h2>
-              <p className="text-gray-600 text-center py-12">
-                Order management interface will be displayed here
-              </p>
-            </div>
-          )}
-
-          {/* Products Tab */}
-          {activeTab === 'products' && (
-            <div className="bg-white p-6 rounded-lg shadow">
-              <h2 className="text-2xl font-bold mb-4">🛍️ Products Management</h2>
-              <p className="text-gray-600 text-center py-12">
-                Product management interface will be displayed here
-              </p>
+              <Link
+                href="/admin/orders"
+                className="inline-block bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700"
+              >
+                Go to Orders
+              </Link>
             </div>
           )}
 
@@ -207,10 +216,13 @@ export default function AdminDashboard() {
           {/* Guest Admins Tab */}
           {activeTab === 'guests' && (
             <div className="bg-white p-6 rounded-lg shadow">
-              <h2 className="text-2xl font-bold mb-4">👥 Guest Admins Management</h2>
-              <p className="text-gray-600 text-center py-12">
-                Guest admin management interface will be displayed here
-              </p>
+              <h2 className="text-2xl font-bold mb-4">👤 Guest Admins Management</h2>
+              <Link
+                href="/admin/guest-admins"
+                className="inline-block bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700"
+              >
+                Manage Guest Admins
+              </Link>
             </div>
           )}
 
@@ -218,9 +230,20 @@ export default function AdminDashboard() {
           {activeTab === 'settings' && (
             <div className="bg-white p-6 rounded-lg shadow">
               <h2 className="text-2xl font-bold mb-4">⚙️ Website Settings</h2>
-              <p className="text-gray-600 text-center py-12">
-                Website settings interface will be displayed here
-              </p>
+              <div className="space-y-4">
+                <button className="w-full bg-gray-200 hover:bg-gray-300 py-2 rounded-lg text-left px-4 font-semibold">
+                  📝 Store Information
+                </button>
+                <button className="w-full bg-gray-200 hover:bg-gray-300 py-2 rounded-lg text-left px-4 font-semibold">
+                  🌐 Website Appearance
+                </button>
+                <button className="w-full bg-gray-200 hover:bg-gray-300 py-2 rounded-lg text-left px-4 font-semibold">
+                  📧 Email Settings
+                </button>
+                <button className="w-full bg-gray-200 hover:bg-gray-300 py-2 rounded-lg text-left px-4 font-semibold">
+                  🔒 Security
+                </button>
+              </div>
             </div>
           )}
         </div>
