@@ -1,17 +1,23 @@
-import React, { useState } from 'react';
+import React from 'react';
 import Link from 'next/link';
-import { useTranslation } from 'react-i18next';
-import { useSelector } from 'react-redux';
 
 export default function Navbar() {
+  const [isMenuOpen, setIsMenuOpen] = React.useState(false);
+  const { useTranslation } = require('react-i18next');
+  const { useSelector } = require('react-redux');
+  const { useRouter } = require('next/router');
+
   const { t, i18n } = useTranslation();
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const cartItems = useSelector(state => state.cart.items);
   const user = useSelector(state => state.auth.user);
+  const router = useRouter();
 
   const changeLanguage = (lng) => {
     i18n.changeLanguage(lng);
   };
+
+  const isLoggedIn = !!localStorage.getItem('token');
+  const userType = localStorage.getItem('userType');
 
   return (
     <nav className="bg-white shadow-lg sticky top-0 z-50">
@@ -60,9 +66,27 @@ export default function Navbar() {
               )}
             </Link>
 
-            {/* Profile */}
-            {user ? (
-              <Link href="/profile" className="text-2xl">👤</Link>
+            {/* Profile/Admin */}
+            {isLoggedIn ? (
+              <div className="flex items-center space-x-4">
+                {userType === 'admin' ? (
+                  <>
+                    <Link href="/admin/dashboard" className="text-gray-700 hover:text-blue-600 text-sm font-semibold">
+                      👨‍💼 Admin
+                    </Link>
+                    <Link href="/admin/orders" className="text-gray-700 hover:text-blue-600 text-sm">
+                      📦 Orders
+                    </Link>
+                  </>
+                ) : (
+                  <>
+                    <Link href="/order-tracking" className="text-gray-700 hover:text-blue-600 text-sm">
+                      🚚 My Orders
+                    </Link>
+                    <Link href="/profile" className="text-2xl">👤</Link>
+                  </>
+                )}
+              </div>
             ) : (
               <Link href="/login" className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
                 Login
